@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { AllocationError, DuplicateLeadError } from "@/lib/errors";
-import { createLeadWithAssignments } from "@/lib/lead-allocation";
+import { createLeadWithAssignments, type AllocatedLead } from "@/lib/lead-allocation";
 import { createLeadSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
         lead: {
           id: lead.id,
           service: lead.service.name,
-          providers: lead.assignments.map((assignment) => assignment.provider.name),
+          providers: lead.assignments.map((assignment: AllocatedLead['assignments'][number]) => assignment.provider.name),
         },
       },
       { status: 201 },
