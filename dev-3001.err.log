@@ -1,0 +1,9 @@
+[browser] ⨯ unhandledRejection: TypeError: Cannot read properties of null (reading 'reset')
+    at onSubmit (src/app/request-service/request-service-form.tsx:49:25)
+  47 |     }
+  48 |
+> 49 |     event.currentTarget.reset();
+     |                         ^
+  50 |     const serviceField = event.currentTarget.elements.namedItem("serviceId");
+  51 |     if (serviceField instanceof HTMLSelectElement) {
+  52 |       serviceField.value = defaultServiceId;

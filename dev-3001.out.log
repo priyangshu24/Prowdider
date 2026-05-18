@@ -1,0 +1,18 @@
+
+> prowidor-mini-lead-distribution@0.1.0 dev
+> next dev --port 3001
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://10.137.180.157:3001
+- Environments: .env
+✓ Ready in 1017ms
+
+ GET /request-service 200 in 2.1s (next.js: 882ms, application-code: 1252ms)
+ GET /api/dashboard 200 in 519ms (next.js: 147ms, application-code: 372ms)
+ POST /api/leads 201 in 2.3s (next.js: 1312ms, application-code: 954ms)
+ GET /request-service 200 in 444ms (next.js: 26ms, application-code: 418ms)
+ POST /api/leads 201 in 239ms (next.js: 13ms, application-code: 226ms)
+✓ Compiled in 635ms
+ GET /request-service 200 in 999ms (next.js: 774ms, application-code: 224ms)
+ GET /request-service 200 in 503ms (next.js: 14ms, application-code: 488ms)

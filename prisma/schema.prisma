@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ServiceRuleType {
+  MANDATORY
+  FAIR_POOL
+}
+
+model Service {
+  id              Int                    @id
+  slug            String                 @unique
+  name            String
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  leads           Lead[]
+  rules           ServiceRule[]
+  allocationState ServiceAllocationState?
+}
+
+model Provider {
+  id           Int              @id
+  name         String
+  monthlyQuota Int              @default(10)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  assignments  LeadAssignment[]
+  quotaRecords ProviderQuota[]
+  rules        ServiceRule[]
+}
+
+model ServiceRule {
+  id         String          @id @default(cuid())
+  serviceId  Int
+  providerId Int
+  type       ServiceRuleType
+  position   Int             @default(0)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+  provider   Provider        @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  service    Service         @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@unique([serviceId, providerId, type])
+  @@index([serviceId, type, position])
+}
+
+model ServiceAllocationState {
+  serviceId Int      @id
+  cursor    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+}
+
+model QuotaCycle {
+  id               String           @id @default(cuid())
+  externalCycleKey String           @unique
+  active           Boolean          @default(false)
+  startedAt        DateTime         @default(now())
+  endedAt          DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  assignments      LeadAssignment[]
+  providerQuotas   ProviderQuota[]
+  webhookEvents    WebhookEvent[]
+
+  @@index([active])
+}
+
+model ProviderQuota {
+  id            String     @id @default(cuid())
+  providerId    Int
+  quotaCycleId  String
+  assignedCount Int        @default(0)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  provider      Provider   @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  quotaCycle    QuotaCycle @relation(fields: [quotaCycleId], references: [id], onDelete: Restrict)
+
+  @@unique([providerId, quotaCycleId])
+  @@index([quotaCycleId])
+}
+
+model Lead {
+  id              String           @id @default(cuid())
+  serviceId       Int
+  name            String
+  phoneRaw        String
+  phoneNormalized String
+  city            String
+  description     String
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  assignments     LeadAssignment[]
+  service         Service          @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+
+  @@unique([phoneNormalized, serviceId])
+  @@index([createdAt])
+}
+
+model LeadAssignment {
+  id           String     @id @default(cuid())
+  leadId       String
+  providerId   Int
+  quotaCycleId String
+  createdAt    DateTime   @default(now())
+  lead         Lead       @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  provider     Provider   @relation(fields: [providerId], references: [id], onDelete: Restrict)
+  quotaCycle   QuotaCycle @relation(fields: [quotaCycleId], references: [id], onDelete: Restrict)
+
+  @@unique([leadId, providerId])
+  @@index([providerId, createdAt])
+  @@index([quotaCycleId])
+}
+
+model WebhookEvent {
+  id           String      @id @default(cuid())
+  eventId      String      @unique
+  type         String
+  quotaCycleId String?
+  processedAt  DateTime    @default(now())
+  payload      Json?
+  quotaCycle   QuotaCycle? @relation(fields: [quotaCycleId], references: [id], onDelete: SetNull)
+}

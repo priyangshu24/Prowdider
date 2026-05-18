@@ -1,0 +1,8 @@
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3001
+- PID:          27028
+- Dir:          C:\Users\KIIT0001\prowidor-mini-lead-distribution
+- Log:          .next\dev\logs\next-development.log
+
+Run taskkill /PID 27028 /F to stop it.
