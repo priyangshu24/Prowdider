@@ -103,3 +103,5 @@
  GET /api/dashboard 200 in 251ms (next.js: 16ms, application-code: 235ms)
  GET /api/dashboard 200 in 181ms (next.js: 9ms, application-code: 172ms)
  GET /api/dashboard 200 in 842ms (next.js: 61ms, application-code: 781ms)
+ GET /api/dashboard 200 in 230ms (next.js: 7ms, application-code: 223ms)
+ GET /api/dashboard 200 in 155ms (next.js: 8ms, application-code: 148ms)
