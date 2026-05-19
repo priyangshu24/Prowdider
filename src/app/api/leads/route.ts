@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { AllocationError, DuplicateLeadError } from "@/lib/errors";
+
+export const dynamic = "force-dynamic";
 import { createLeadWithAssignments, type AllocatedLead } from "@/lib/lead-allocation";
 import { createLeadSchema } from "@/lib/validation";
 

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { processQuotaResetWebhook } from "@/lib/webhook";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
