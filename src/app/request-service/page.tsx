@@ -5,10 +5,10 @@ export default function RequestServicePage() {
     <section className="page-shell">
       <div className="page-intro">
         <span className="eyebrow">Public route</span>
-        <h1>Lead capture</h1>
+        <h1>Request a service</h1>
         <p>
-          This form persists every request, blocks duplicate phone plus service submissions, and
-          triggers provider allocation immediately after the lead is created.
+          Every submission is persisted, duplicate phone + service combinations are blocked at the
+          database level, and providers are allocated the moment a lead is created.
         </p>
       </div>
       <RequestServiceForm />

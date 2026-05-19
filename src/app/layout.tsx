@@ -20,7 +20,7 @@ export default function RootLayout({
             <Link href="/" className="brand-mark">
               <span className="brand-pill">P</span>
               <div>
-                <strong>Prowider Mini Lead Distribution</strong>
+                <strong>Provider Mini Lead Distribution</strong>
                 <p>Reliable routing for service enquiries</p>
               </div>
             </Link>

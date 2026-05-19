@@ -7,11 +7,7 @@ type SubmitState =
   | { status: "idle" }
   | { status: "submitting" }
   | { status: "error"; message: string }
-  | {
-      status: "success";
-      message: string;
-      providers: string[];
-    };
+  | { status: "success"; message: string; providers: string[] };
 
 export function RequestServiceForm() {
   const [state, setState] = useState<SubmitState>({ status: "idle" });
@@ -23,10 +19,10 @@ export function RequestServiceForm() {
 
     const formData = new FormData(event.currentTarget);
     const payload = {
-      name: String(formData.get("name") ?? ""),
+      name:        String(formData.get("name") ?? ""),
       phoneNumber: String(formData.get("phoneNumber") ?? ""),
-      city: String(formData.get("city") ?? ""),
-      serviceId: Number(formData.get("serviceId")),
+      city:        String(formData.get("city") ?? ""),
+      serviceId:   Number(formData.get("serviceId")),
       description: String(formData.get("description") ?? ""),
     };
 
@@ -39,19 +35,14 @@ export function RequestServiceForm() {
     const data = await response.json();
 
     if (!response.ok) {
-      setState({
-        status: "error",
-        message: data.error ?? "Unable to submit the lead.",
-      });
+      setState({ status: "error", message: data.error ?? "Unable to submit the lead." });
       return;
     }
 
     if (event.currentTarget) {
       event.currentTarget.reset();
       const serviceField = event.currentTarget.elements.namedItem("serviceId");
-      if (serviceField instanceof HTMLSelectElement) {
-        serviceField.value = defaultServiceId;
-      }
+      if (serviceField instanceof HTMLSelectElement) serviceField.value = defaultServiceId;
     }
 
     setState({
@@ -65,53 +56,56 @@ export function RequestServiceForm() {
     <form className="panel form-grid" onSubmit={onSubmit}>
       <div className="panel-header">
         <span className="eyebrow">Customer intake</span>
-        <h2>Request a service</h2>
-        <p className="muted">
-          Duplicate phone number plus service combinations are rejected at the database level.
+        <h2>Lead details</h2>
+        <p className="muted" style={{ marginTop: "2px" }}>
+          Duplicate phone + service combinations are rejected at the database level.
         </p>
       </div>
 
-      <label>
-        <span>Name</span>
-        <input name="name" type="text" placeholder="Aman Patel" required />
-      </label>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "18px" }}>
+        <label>
+          <span>Full name</span>
+          <input name="name" type="text" placeholder="Aman Patel" required />
+        </label>
+        <label>
+          <span>Phone number</span>
+          <input name="phoneNumber" type="tel" placeholder="9999999999" required />
+        </label>
+      </div>
 
-      <label>
-        <span>Phone Number</span>
-        <input name="phoneNumber" type="tel" placeholder="9999999999" required />
-      </label>
-
-      <label>
-        <span>City</span>
-        <input name="city" type="text" placeholder="Bhubaneswar" required />
-      </label>
-
-      <label>
-        <span>Service Type</span>
-        <select name="serviceId" defaultValue={defaultServiceId}>
-          {SERVICE_OPTIONS.map((service) => (
-            <option key={service.id} value={service.id}>
-              {service.label}
-            </option>
-          ))}
-        </select>
-      </label>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "18px" }}>
+        <label>
+          <span>City</span>
+          <input name="city" type="text" placeholder="Bhubaneswar" required />
+        </label>
+        <label>
+          <span>Service type</span>
+          <select name="serviceId" defaultValue={defaultServiceId}>
+            {SERVICE_OPTIONS.map((service) => (
+              <option key={service.id} value={service.id}>
+                {service.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
 
       <label className="full-width">
         <span>Description</span>
         <textarea
           name="description"
-          rows={5}
+          rows={4}
           placeholder="Describe the service requirement in enough detail for providers."
           required
         />
       </label>
 
-      <button className="primary-button" type="submit" disabled={state.status === "submitting"}>
-        {state.status === "submitting" ? "Submitting..." : "Submit lead"}
-      </button>
-
-      {state.status === "error" && <p className="error-text">{state.message}</p>}
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
+        <button className="primary-button" type="submit" disabled={state.status === "submitting"}>
+          {state.status === "submitting" ? "Submitting…" : "Submit lead"}
+        </button>
+        {state.status === "error" && <p className="error-text">{state.message}</p>}
+      </div>
 
       {state.status === "success" && (
         <div className="success-box">

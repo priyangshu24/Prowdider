@@ -7,8 +7,8 @@ export default function DashboardPage() {
         <span className="eyebrow">Provider operations</span>
         <h1>Live dashboard</h1>
         <p>
-          The dashboard reads from the database and refreshes automatically every few seconds, so
-          new allocations appear without a manual page reload.
+          Reads live from the database and refreshes automatically every few seconds — new
+          allocations appear without a manual page reload.
         </p>
       </div>
       <DashboardClient />
